@@ -1,0 +1,100 @@
+body {
+  font-family: sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+  margin: 0;
+  padding: 1rem;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --card-bg: #f2f2f2;
+}
+
+
+/* KEEP THIS IT REMOVES THE SCROLLBARS AND MAKES THE SITE LOOK BETTER */
+* {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+*::-webkit-scrollbar {
+    display: none; 
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f1f1f1;
+  --card-bg: #1e1e1e;
+}
+
+.theme-toggle {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#search {
+  padding: 8px;
+  width: 80%;
+  max-width: 400px;
+  font-size: 16px;
+}
+/*
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}*/
+ .cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 100px; /* Compensate for child padding */
+}
+
+
+
+.card {
+  background-color: var(--card-bg);
+  padding: 30px;
+ border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px #00000022;
+  width: calc(33.333% - 20px); /* 3 columns, adjust as needed */
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+
+.card img {
+/*  width: 100%;*/
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+
+.card h3 {
+  margin: 10px 0;
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #008cff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.card a:hover {
+  background-color: #006edc;
+}
