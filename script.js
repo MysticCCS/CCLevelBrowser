@@ -45,7 +45,7 @@ async function loadLevels() {
   const card = document.createElement('div');
  // const res = await fetch('/api/levels');
  // console.log(res)
-  const data = await fetch('/data.json');
+  const data = await fetch('./data.json');
   data.forEach(createCard);
 }
 
