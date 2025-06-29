@@ -15,6 +15,7 @@ body {
 
 
 /* KEEP THIS IT REMOVES THE SCROLLBARS AND MAKES THE SITE LOOK BETTER */
+/*
 * {
     scrollbar-width: none; 
     -ms-overflow-style: none; 
@@ -22,7 +23,7 @@ body {
 
 *::-webkit-scrollbar {
     display: none; 
-}
+}*/
 
 body.dark {
   --bg: #121212;
