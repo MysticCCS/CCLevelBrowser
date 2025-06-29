@@ -271,7 +271,7 @@ else {
   card.dataset.title = `Dreamworld Level ${absLevel}, Episode ${e}`.toLowerCase();
 }
   card.innerHTML = `
-    <img src="/images/${image}" alt="Level Image" loading="lazy">
+    <img src="./images/${image}" alt="Level Image" loading="lazy">
     <h3>${dreamlevel} Level ${absLevel} | ${e}</h3>
     <p>Score Targets: <strong>${scoreTargets[0]}</strong> for 1 Star, <strong>${scoreTargets[1]}</strong> for 2 Stars, <strong>${scoreTargets[2]}</strong> for 3 Stars.</p>
     <p>Level Type: <strong>${levelType}</strong></p>
