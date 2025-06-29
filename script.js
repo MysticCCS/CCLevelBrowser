@@ -277,7 +277,6 @@ else {
     <p>Level Type: <strong>${levelType}</strong></p>
     <p><strong>${movesOrTime} ${s_or_m}</strong></p>
     <a href="https://mysticccs.github.io/playtester/?levelCode=${encodeURIComponent(JSON.stringify(levelCode))}" target="_blank">Play</a>
-    <a href="https://mysticccs.github.io/playtester_vanilla/?levelCode=${encodeURIComponent(JSON.stringify(levelCode))}" target="_blank">Play In Vanilla</a>
   `;
   
 
