@@ -5,25 +5,32 @@ document.getElementById('toggleTheme').onclick = () => {
   document.body.classList.toggle('dark');
 };
 
-function createCard({ episode, level, isDreamworld, image, levelCode, absLevel, scoreTargets, levelType, movesOrTime, s_or_m }) {
+let allLevels = [];
+let currentIndex = 0;
+const BATCH_SIZE = 20;
+
+const sentinel = document.createElement('div');
+sentinel.id = "scroll-sentinel";
+cardsContainer.appendChild(sentinel);
+
+function createCard({
+  episode,
+  level,
+  isDreamworld,
+  image,
+  levelCode,
+  absLevel,
+  scoreTargets,
+  levelType,
+  movesOrTime,
+  s_or_m
+}) {
   const card = document.createElement('div');
   card.className = 'card';
-  card.loading = 'lazy';
-  //card.dataset.title = `episode ${episode} level ${level}`.toLowerCase();
 
-  /*card.innerHTML = `
-    <img src="/images/${image}" alt="Level Image" loading="lazy">
-    <h3>${isDreamworld ? '🌙 Dreamworld - ' : ''}Episode ${episode}, Level ${level}</h3>
-    <a href="https://mysticccs.github.io/playtester/?levelCode=${encodeURIComponent(JSON.stringify(levelCode))}" target="_blank">Play</a>
-  `;*/
-  let dreamlevel;
-  if (isDreamworld === true) {
-     dreamlevel = '🌙 Dreamworld';
-  }
-  else {
-    dreamlevel = '';
-  }
-    let strings = {
+  let dreamlevel = isDreamworld ? '🌙 Dreamworld' : '';
+
+  let strings = {
   "map_decoration_text_episode_name_episode1": "Candy Town",
   "map_decoration_text_episode_name_episode2": "Candy Factory",
   "map_decoration_text_episode_name_episode3": "Lemonade Lake",
@@ -258,45 +265,66 @@ function createCard({ episode, level, isDreamworld, image, levelCode, absLevel, 
   "map_decoration_text_episode_name_episode1243": "Banana Bliss",
   "map_decoration_text_episode_name_episode1244": "Nocturnal Nuisance",
   "map_decoration_text_episode_name_episode1245": "Dozy Dawn"
-    }
-  let episodeName = `map_decoration_text_episode_name_episode${episode}`
-  let e =  strings[episodeName];
-  if (e === undefined) {
-    e = `Episode ${episode}`;
-  }
-    if (isDreamworld === false) { 
-  card.dataset.title = `Level ${absLevel}, Episode ${e}`.toLowerCase();
-}
-else {
-  card.dataset.title = `Dreamworld Level ${absLevel}, Episode ${e}`.toLowerCase();
-}
+  };
+
+  let episodeName = `map_decoration_text_episode_name_episode${episode}`;
+  let e = strings[episodeName] || `Episode ${episode}`;
+
+  card.dataset.title = (isDreamworld
+    ? `Dreamworld Level ${absLevel}, Episode ${e}`
+    : `Level ${absLevel}, Episode ${e}`
+  ).toLowerCase();
+
   card.innerHTML = `
     <img src="./images/${image}" alt="Level Image" loading="lazy">
     <h3>${dreamlevel} Level ${absLevel} | ${e}</h3>
-    <p>Score Targets: <strong>${scoreTargets[0]}</strong> for 1 Star, <strong>${scoreTargets[1]}</strong> for 2 Stars, <strong>${scoreTargets[2]}</strong> for 3 Stars.</p>
+    <p>Score Targets: <strong>${scoreTargets[0]}</strong> for 1 Star,
+       <strong>${scoreTargets[1]}</strong> for 2 Stars,
+       <strong>${scoreTargets[2]}</strong> for 3 Stars.</p>
     <p>Level Type: <strong>${levelType}</strong></p>
     <p><strong>${movesOrTime} ${s_or_m}</strong></p>
-    <a href="https://mysticccs.github.io/playtester/?levelCode=${encodeURIComponent(JSON.stringify(levelCode))}" target="_blank">Play</a>
+    <a href="https://mysticccs.github.io/playtester/?levelCode=${encodeURIComponent(JSON.stringify(levelCode))}" target="_blank">
+      Play
+    </a>
   `;
-  
 
-  cardsContainer.appendChild(card);
+  cardsContainer.insertBefore(card, sentinel);
 }
 
 async function loadLevels() {
-  const card = document.createElement('div');
- // const res = await fetch('/api/levels');
- // console.log(res)
   const res = await fetch('./data.json');
-  const data = await res.json();
-  data.forEach(createCard);
+  allLevels = await res.json();
+
+  loadMoreLevels(); // first batch
 }
+
+function loadMoreLevels() {
+  const nextBatch = allLevels.slice(currentIndex, currentIndex + BATCH_SIZE);
+
+  nextBatch.forEach(createCard);
+
+  currentIndex += BATCH_SIZE;
+}
+
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    loadMoreLevels();
+  }
+}, {
+  root: null,
+  rootMargin: "300px",
+  threshold: 0
+});
+
+observer.observe(sentinel);
 
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.toLowerCase();
+
   document.querySelectorAll('.card').forEach(card => {
     card.style.display = card.dataset.title.includes(q) ? '' : 'none';
   });
 });
 
+// -------------------- START --------------------
 loadLevels();
