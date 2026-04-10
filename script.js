@@ -326,5 +326,4 @@ searchInput.addEventListener('input', () => {
   });
 });
 
-// -------------------- START --------------------
 loadLevels();
